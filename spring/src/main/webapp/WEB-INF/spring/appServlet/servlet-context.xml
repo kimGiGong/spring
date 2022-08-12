@@ -23,8 +23,27 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.spring.controller" />
+	
+	
+	<!-- base-package 지정한 패키지를 스캔 : 해당 패키지에 선언된 클래스들을 조사하여 
+	@Component, @Controller, @Service, @Repository 등의
+	어노테이션이 붙은 클래스 들을 스프링빈으로 등록(객체생성과 관리와 객체의 생명주기를 스프링이 관리) -->
+	<context:component-scan base-package="com.spring.controller" /> 
+	<!-- package를 스캔해서 controller들을 context해서 객체생성해줌 -->
+	
 	
 	
 	
 </beans:beans>
+
+
+
+
+
+
+
+
+
+
+
+

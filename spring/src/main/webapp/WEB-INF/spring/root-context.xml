@@ -14,5 +14,40 @@
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<constructor-arg ref="hikariConfig"/>
 	</bean>
+
+	<bean id="day" class="java.util.Date"/>
+	<bean id="day2" class="java.util.Date"/>
+	
+	<!-- property : set 메서드 호출하여 지정한 값 체워서 빈으로 등록(객체생성) 
+		value : 기본형과 문자열 타입의 값을 체우는 속성
+		ref : 객체를 값으로 체우는 속성명	
+	
+	<bean id="tv" class="com.spring.dto.SampleTV" >
+		<property name="power" value="true" />
+		<property name="ch" value="10" />
+		<property name="col" value="green" />
+		<property name="reg" ref="day"/>
+	</bean>
+	-->
+	<!--  constructor-arg : 생성자를 이용하여 값을 채워 빈으로 등록
+		value 만 작성 : 생성자 매개변수 순서에 따라 체워줌(모호한 입력)
+		index : 생성자로 보내는 매개변수의 순서 지정
+		type : 생성자의 매개변수의 타입을 지정해서 채워줌
+				value ="100"	int
+				value ="10"		long
+		name : 생성자의 매개변수 이름을 name 속성으로 지정해서 매핑
+	-->
+	<bean id = "tv" class="com.spring.dto.SampleTV">
+		<constructor-arg type="boolean" value="true"/>
+		<constructor-arg name="ch" value="100"/>
+		<constructor-arg type="java.lang.String" value="green"/>
+		<constructor-arg index="3" ref="day"/>
+	</bean>
+
+
+
+
+
 	
 </beans>
+
