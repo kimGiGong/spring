@@ -1,19 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	https://www.springframework.org/schema/beans/spring-beans.xsd
+	http://mybatis.org/schema/mybatis-spring
+	http://mybatis.org/schema/mybatis-spring-1.2.xsd">
 	
 	<!-- Root Context: Service(비즈니스로직처리), DB관련 설정 -->
 	<!-- 커넥션 풀 세팅 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.100.250:1521:ORCL" />
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@192.168.100.250:1521:ORCL" />
 		<property name="username" value="java04" />
 		<property name="password" value="java04" />
 	</bean>
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<constructor-arg ref="hikariConfig"/>
 	</bean>
+	
+	<!-- MyBatis 연동 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
+	</bean>
+	
+	<!-- MyBatis Mapper 스캔하도록 패키지 지정 : 패키지 안의 모든 MybBatis 어노테이션을 찾아서 처리 -->
+	<mybatis-spring:scan base-package="com.spring.mapper"/>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 연습 ( 지우면 에러남 )-->
 
 	<bean id="day" class="java.util.Date"/>
 	<bean id="day2" class="java.util.Date"/>
@@ -37,6 +77,8 @@
 				value ="10"		long
 		name : 생성자의 매개변수 이름을 name 속성으로 지정해서 매핑
 	-->
+	
+	
 	<bean id = "tv" class="com.spring.dto.SampleTV">
 		<constructor-arg type="boolean" value="true"/>
 		<constructor-arg name="ch" value="100"/>
