@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.member.persistence.MemberMapper">
+
+	<insert id="insertMember">
+		insert into springMember values(#{id},#{pw},#{name},#{gender},#{email},sysdate)
+	</insert>
+	
+	<select id="idPwCheck" resultType="int">
+		select count(*) from springMember where id=#{id}
+		<if test="pw != null">
+		and pw=#{pw}
+		</if>
+	</select>
+  
+  	<select id="getMember" resultType="com.member.domain.MemberDTO" parameterType="String">
+  		select * from springMember where id=#{id}
+  	</select>
+  
+  	<update id="updateMember">
+  		update springMember set name=#{name}
+  		<if test="email != null">
+  			,email=#{email}
+  		</if>  
+  		where id=#{id}
+  	</update>
+  
+ 	<delete id="deleteMember">
+ 		delete from springMember where id=#{id}
+ 	</delete>
+ 	 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</mapper>
