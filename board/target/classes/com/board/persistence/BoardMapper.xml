@@ -8,20 +8,52 @@
 		select * from springBoard
 	</select>
 	
-	<select id="getListWithPaging" parameterType="com.board.domain.Criteria" resultType="com.board.domain.BoardVO">
+	<sql id="search">
+		<trim prefix="(" suffix=") and " prefixOverrides="or">
+			<foreach item="sel" collection="selArr">
+				<trim prefix="or" >
+					<choose>
+						<when test="sel == 'T'.toString()">
+							title like '%'||#{keyword}||'%'
+						</when>
+						<when test="sel == 'C'.toString()">
+							content like '%'||#{keyword}||'%'
+						</when>
+						<when test="sel == 'W'.toString()">
+							writer like '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+	
+	
+	
+	<select id="getListWithPaging" resultType="com.board.domain.BoardVO">
 		<![CDATA[
 		select bno,title,writer,reg from
 			(select /*+ index_desc(springBoard pk_springBoard) */ 
 			rownum r, bno,title,writer,reg 
 			from springBoard
-			where rownum <= #{pageNum} * #{listQty} )
+			where 
+		]]>
+		
+			<include refid="search"></include>
+			
+		<![CDATA[	
+			rownum <= #{pageNum} * #{listQty} )
 		where r> (#{pageNum}-1) * #{listQty}
 		]]>
 	</select>
 
 
 	<select id="getTotalCount" resultType="int">
-		select count(*) from springBoard
+		select count(*) from springBoard where
+		
+		<include refid="search"></include>
+		
+		bno > 0
 	</select>
 	
 	

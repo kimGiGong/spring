@@ -1,5 +1,8 @@
 package com.board.domain;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.Getter;
@@ -15,6 +18,9 @@ public class Criteria {	//	게시판에 사용시 부수적으로 필요한 데�
 	private int pageNum;	//	페이지 번호
 	private int listQty;	//	한페이지에 보여줄 게시물 갯수
 	
+	private String sel;		//	검색 조건 T W C TW TC TCW
+	private String keyword;	//	검색 키워드
+	
 	public Criteria() {
 		this(1, 10);	//	페이지 번호 1 이고 10개씩 보여주겠다.
 	}
@@ -23,13 +29,20 @@ public class Criteria {	//	게시판에 사용시 부수적으로 필요한 데�
 		this.listQty = listQty;
 	}
 	
+	//	검색 조건을 배열로 만들어 한번에 처리하기 위한 메서드 추가
+	public String[] getSelArr() {
+		return sel == null ? new String[] {} : sel.split("");
+	}
+	
 	
 	
 	//	URL 링크 붙히는 쿼리 스트링 자동 생성해주는 메서드
 	public String getListLink() {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
 				.queryParam("pageNum",this.pageNum)
-				.queryParam("listQty", this.listQty);
+				.queryParam("listQty", this.listQty)
+				.queryParam("sel", this.sel)
+				.queryParam("keyword", this.keyword);
 		
 		return builder.toUriString();	//	?pageNum=1&listQty=10
 	}

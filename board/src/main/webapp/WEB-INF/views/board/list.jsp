@@ -41,6 +41,33 @@
                 </table>
                 <!-- END TABLE -->
                 
+                <%-- 검색 박스 --%>
+                <div class="row">
+                	<div class="col-lg-6">
+						<form action="/board/list" id="searchForm" method="get" >
+                			<select name="sel">
+                				<option value="">----</option>
+                				<option value="T">제목</option>
+                				<option value="C">내용</option>
+                				<option value="W">작성자</option>
+                				<option value="TC">제목 or 내용</option>
+                				<option value="TW">제목 or 작성자</option>
+                				<option value="TWC">제목 or 작성자 or 내용</option>
+                			</select>
+                			<input type="text" name="keyword">
+                			<input type="hidden" name="pageNum" value="${pager.cri.pageNum}">
+                			<input type="hidden" name="listQty" value="${pager.cri.listQty}">
+                			<button class="btn btn-secondary">Search</button>
+						</form>                
+                	</div>
+                </div>
+                
+                
+                
+                
+                
+                
+                
                 <%-- 페이지 번호 PAGINATION --%>
                 <div class="row float-right">
                 	<div class="col-sm-12 col-md-7">
@@ -70,6 +97,8 @@
                 <form id="pagingForm" action="/board/list">
                 	<input type="hidden" name="pageNum" value="${pager.cri.pageNum}">
                 	<input type="hidden" name="listQty" value="${pager.cri.listQty}">
+                	<input type="hidden" name="sel" value="${pager.cri.sel}">
+                	<input type="hidden" name="keyword" value="${pager.cri.keyword}">
                 </form>
                 
                 
@@ -124,7 +153,7 @@
 		$(".pagination a").on("click", function (e) {
 			e.preventDefault();		//	a태그의 기본이동 기능 취소
 			console.log("a click! click!");
-			
+			pagingForm.attr("action","/board/list");
 			//	form태그의 pageNum value 속성값을 
 			//	이벤트를 발생시킨 a태그의 href 속성값으로 변경
 			pagingForm.find("input[name='pageNum']").val($(this).attr("href"));
@@ -149,6 +178,28 @@
 		});
 		
 	
+		//	검색 폼 처리
+		let searchForm = $("#searchForm");
+		$("#searchForm button").on("click", function (e) {
+			if(!searchForm.find("option:selected").val()){
+				alert("검색 조건을 선택하세요...");
+				return false;	//	submit 이동 막기
+			}
+			if(!searchForm.find("input[name='keyword']").val()){
+				alert("키워드를 입력하세요...");
+				return false;	//	submit 이동 막기
+			}
+			e.preventDefault();
+			searchForm.find("input[name='pageNum']").val("1");	//	1페이지로 바꾸기
+			searchForm.submit();
+			
+			
+		});
+		
+		
+		
+		
+		
 	
 	
 		

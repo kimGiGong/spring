@@ -33,13 +33,38 @@
                     </div>
                 </div>
                  <div class="mr-1 ml-1">
-						<button class="btn btn-danger" onclick="location.href='/board/modify?bno=${board.bno}&pageNum=${cri.pageNum}&listQty=${cri.listQty}'">발사!</button>
-						<button class="btn btn-info" onclick="location.href='/board/list?pageNum=${cri.pageNum}&listQty=${cri.listQty}'"> List </button>
+						<button class="btn btn-danger" data-service="modify">발사!</button>
+						<button class="btn btn-info" data-service="list"> List </button>
                  </div>
+                 <form id="btnForm" action="/board/modify" method="get">
+                 	<input type="hidden" name="bno" value="${board.bno}" id="bno">
+                 	<input type="hidden" name="pageNum" value="${cri.pageNum}">
+                 	<input type="hidden" name="listQty" value="${cri.listQty}">
+                 	<input type="hidden" name="sel" value="${cri.sel}">
+                 	<input type="hidden" name="keyword" value="${cri.keyword}">
+                 </form>
             </div>
         </div>
-        <!--  content 내용물 끝나는 부분  -->                 
-
+        <!--  content 내용물 끝나는 부분  -->
+        
+        
+        
+    <%-- script 태그 --%>                 
+	<script type="text/javascript">
+	$(document).ready( function () {
+		let btnForm = $("#btnForm");
+		$("button[data-service='modify']").on("click", function () {
+			btnForm.attr("action","/board/modify").submit();
+		});
+		$("button[data-service='list']").on("click", function () {
+			btnForm.find("#bno").remove();	//	bno 히든태그 삭제
+			btnForm.attr("action","/board/list");	//	action 속성값 list 로 변경
+			btnForm.submit();
+		});
+	});
+	
+	
+	</script>
 
 
 

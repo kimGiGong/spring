@@ -3,14 +3,32 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	https://www.springframework.org/schema/beans/spring-beans.xsd
 	http://mybatis.org/schema/mybatis-spring
 	http://mybatis.org/schema/mybatis-spring-1.2.xsd
 	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+	">
 	
 	<!-- Root Context: Service(비즈니스로직처리), DB관련 설정 -->
+	
+	<!-- 파일 다운로드 -->
+	<bean id = "fileDown" class="com.upload.util.DownloadView" />
+	
+	
+	<!-- 파일 업로드  -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="-1"></property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+			
+	</bean>
+	
+	
 	<!-- 커넥션 풀 세팅 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
@@ -33,7 +51,46 @@
 	
 	<!-- 서비스 패키지 스캔하여, @Component, @Service등 어노테이션 붙은 클래스 
 	스프링빈으로 등록하도록 설정(빈으로 등록해야 객체가 생성되고 메서드 실행가능) -->
-	<context:component-scan base-package="com.board.service"></context:component-scan>
+	<context:component-scan base-package="com.board.service" />
+
 	
+	<!-- aop 어노테이션 설정 -->
+	<!-- 해당 패키지 안의 @Component 어노테이션 붙은 클래스 스프링빈으로 등록 -->
+	<context:component-scan base-package="com.board.aop" />
+	<aop:aspectj-autoproxy />
 	
+	<!-- aop xml 설정
+	<bean id="advice" class="com.board.aop.Advice" />
+	 -->
+	<!-- 
+			<aop:before method="before" pointcut-ref="pc1" />
+			<aop:after method="afterAop" pointcut-ref="pc1"/>
+			<aop:after-returning method="afterReturning" pointcut-ref="pc1"/>
+			<aop:after-throwing method="afterThrowing" pointcut-ref="pc1"/>
+			<aop:after- method="afterThrowing" pointcut-ref="pc1"/>
+	 -->
+	<!-- 
+	<aop:config> -->
+		<!-- TestService로 시작하는 모든 클래스.모든 메서드(아무거나) -->
+<!-- 	<aop:pointcut expression="execution(* com.board.service.TestService*.*(..))" id="pc1"/>
+		<aop:aspect ref="advice">
+			<aop:around method="around" pointcut-ref="pc1"/>
+		</aop:aspect>
+	</aop:config>
+ -->	
 </beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

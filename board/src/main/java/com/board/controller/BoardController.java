@@ -30,6 +30,8 @@ public class BoardController {
 		log.info("list 호출");
 		//	model로 list jsp에 뿌려줄 글 목록 전달
 		model.addAttribute("list",service.getList(cri));
+		log.info("================="+cri+"==================");
+		
 		
 		int total = service.getTotal(cri);	//	게시글의 갯수 가져오기
 		log.info("================="+total+"==================");

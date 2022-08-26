@@ -43,8 +43,10 @@
 						<button type="submit" data-service="list" class="btn btn-info" onclick="location.href='/board/list'"> List </button>
                  </div>
                  <%-- 이동시 들고갈 pageNum listQty 히든으로 추가 --%>
-                 <input type="hidden" name="pageNum" value="${cri.pageNum }">
-                 <input type="hidden" name="listQty" value="${cri.listQty }">
+	                 <input type="hidden" name="pageNum" value="${cri.pageNum }">
+	                 <input type="hidden" name="listQty" value="${cri.listQty }">
+	                 <input type="hidden" name="sel" value="${cri.sel}">
+					 <input type="hidden" name="keyword" value="${cri.keyword}">
                  
                  </form>
             </div>
@@ -75,6 +77,8 @@
 					//	pageNum과 listQty 히든 태그를 복사해놓고
 					let pageNumTag =$("input[name='pageNum']").clone();
 					let listQtyTag =$("input[name='listQty']").clone();
+					let selTag =$("input[name='sel']").clone();
+					let keywordTag =$("input[name='keyword']").clone();
 					
 					//	내용물 전부 삭제하고
 					formObj.empty();
@@ -82,6 +86,8 @@
 					//	복사해둔거 추가한후
 					formObj.append(pageNumTag);
 					formObj.append(listQtyTag);
+					formObj.append(selTag);
+					formObj.append(keywordTag);
 					//	submit()
 				}
 				
