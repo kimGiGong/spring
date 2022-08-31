@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.User;
 
 import com.member.domain.MemberVO;
 
+import lombok.Getter;
+
+@Getter
 public class CustomUser extends User{
 	
 	//	회원 정보 담을 인스턴스 변수 추가

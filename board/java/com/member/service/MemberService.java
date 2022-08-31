@@ -20,4 +20,5 @@ public interface MemberService {
 	
 	//	회원탈퇴 처리
 	public int deleteMember(MemberVO member);
+	
 }

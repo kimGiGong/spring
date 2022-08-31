@@ -31,15 +31,45 @@
 	로그인 상태 <br>	   
    	<table>
       <tr>
-         <td><button onclick="window.location='/common/logout'">로그아웃</button></td>
+         <td>
+         	<%-- 시큐리티로 로그아웃 : /logout Post 요청 , csrf 토큰 필수 --%>
+         	<form action="/logout" method="post">
+         	   	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"> <%-- 시큐리티 토큰 --%>
+	        	<button>로그아웃</button>
+         	</form>
+         </td>
       </tr>
       <tr>
-         <td><button onclick="window.location='/common/mypage'">마이페이지</button></td>
+         <td><button onclick="window.location='/member/mypage'">마이페이지</button></td>
       </tr>
       <tr>
          <td><button onclick="window.location='/board/list'">게시판</button></td>
       </tr>
   	</table>
+  	<h3>사용자 정보 출력</h3>
+  	<table>
+  		<tr>
+			<td>pricipal</td>
+			<td><sec:authentication property="principal"/></td>	<%-- principal = CustomUser 클래스 를 의미함 --%>
+  		</tr>
+  		<tr>
+			<td>MemberVO</td>
+			<td><sec:authentication property="principal.member"/></td>
+  		</tr>
+  		<tr>
+			<td>사용자 이름</td>
+			<td><sec:authentication property="principal.member.name"/></td>
+  		</tr>
+  		<tr>
+			<td>사용자 ID</td>
+			<td><sec:authentication property="principal.username"/></td>
+  		</tr>
+  		<tr>
+			<td>권한 리스트</td>
+			<td><sec:authentication property="principal.member.authList"/></td>
+  		</tr>
+  	</table>
+  	
 	</sec:authorize>
    
    	<br /><br />

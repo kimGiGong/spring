@@ -1,6 +1,8 @@
 package com.board.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +24,16 @@ import oracle.jdbc.proxy.annotation.GetProxy;
 @Log4j
 public class BoardController {
 	
+	
+	
+	
 	@Autowired
 	private BoardService service;
+	
+	
+	
+	
+	
 	
 	@RequestMapping("list")
 	public void list(Model model,Criteria cri) {
@@ -40,13 +50,30 @@ public class BoardController {
 	}
 
 	
-	@GetMapping({"read","modify"})
+	
+
+	@GetMapping("read")
 	public void read(Long bno , Model model ,@ModelAttribute("cri") Criteria cri) {
 		model.addAttribute("board",service.get(bno));
 	}
 	
 	
 	
+	
+	
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("modify")
+	public void modifyForm(Long bno , Model model ,@ModelAttribute("cri") Criteria cri) {
+		model.addAttribute("board",service.get(bno));
+	}
+	
+	
+	
+	
+	
+	
+	@PreAuthorize("principal.username == #board.writer")
 	@PostMapping("modify")
 	public String modify(BoardVO board, Criteria cri ,RedirectAttributes rttr ) {
 		//	수정 처리
@@ -57,8 +84,12 @@ public class BoardController {
 		return "redirect:/board/list"+cri.getListLink();
 	}
 	
+	
+	
+	
+	@PreAuthorize("principal.username == #writer")
 	@PostMapping("delete")
-	public String delete(Long bno,Criteria cri, RedirectAttributes rttr) {
+	public String delete(Long bno,String writer,Criteria cri, RedirectAttributes rttr) {
 		//	삭제처리
 		if(service.delete(bno)) {
 			log.info("================삭제성공=====================");
@@ -69,14 +100,21 @@ public class BoardController {
 	}
 	
 	
+	
+	
 	//	글 등록 폼
 	@GetMapping("write")
+	@PreAuthorize("isAuthenticated()")	//	로그인한 사용자만 접근 가능하게
 	public void write() {
 		
 	}
 	
+	
+	
+	
 	//	글 등록 처리
 	@PostMapping("write")
+	@PreAuthorize ("isAuthenticated()")
 	public String writeBoard(BoardVO board, Criteria cri, RedirectAttributes rttr) {
 		log.info("write 처리!" + board);
 		

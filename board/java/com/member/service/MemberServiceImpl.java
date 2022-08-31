@@ -9,6 +9,7 @@ import com.member.domain.MemberVO;
 import com.member.persistence.MemberMapper;
 
 import lombok.extern.log4j.Log4j;
+import oracle.net.aso.m;
 
 @Service
 @Log4j
@@ -50,20 +51,35 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberVO getMember(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.getMember(id);
 	}
 
 	@Override
 	public int modifyMember(MemberVO member) {
-		// TODO Auto-generated method stub
-		return 0;
+		//	id pw 체크 추가
+		int result =0;
+		MemberVO dbMember = getMember(member.getId());
+		if(bcryptPasswordEncoder.matches(member.getPw(), dbMember.getPw())) {
+			result = mapper.updateMember(member);
+		}
+		
+		return result;
 	}
 
 	@Override
 	public int deleteMember(MemberVO member) {
-		// TODO Auto-generated method stub
-		return 0;
+		//	id pw 체크 추가
+		int result = 0;
+		MemberVO dbMember = getMember(member.getId());
+		if(bcryptPasswordEncoder.matches(member.getPw(),dbMember.getPw())) {
+			result =1;
+			int deleteRes = mapper.deleteAuth(member.getId());
+			log.info("*********** delete member auth res : " + deleteRes);
+			deleteRes = mapper.deleteMember(member.getId());
+			log.info("*********** delete member res : " + deleteRes);
+
+		}
+		return result;
 	}
 
 }

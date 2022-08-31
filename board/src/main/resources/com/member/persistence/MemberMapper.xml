@@ -67,6 +67,12 @@
 	</delete>
 
 
+	<select id="idPwCheck" resultType="int">
+		select count(*) from memberSec where id=#{id}
+		<if test="pw != null">
+			and pw =#{pw}
+		</if>
+	</select>
 
 
 
